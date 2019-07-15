@@ -6,10 +6,11 @@ main() {
   action=$(cat "$GITHUB_EVENT_PATH" | jq -r .action )
 
   if [[ "$action" != "opened" ]] \
-    || [[ "$action" != "reopened" ]] \
-    || [[ "$action" != "synchronize" ]]; then
+    && [[ "$action" != "reopened" ]] \
+    && [[ "$action" != "synchronize" ]]; then
     # Skip this action
-    exit 78
+    echo "action: $action -> Skip"
+    exit 0
   fi
 
   base_br=$(cat "$GITHUB_EVENT_PATH" | jq -r '.pull_request.base.ref')
